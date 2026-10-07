@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Melodia.Domain.Abstractions
 {
-    public sealed record Error(string Code, string Description, ErrorType Type)
+    public  record Error(string Code, string Description, ErrorType Type)
     {
 
         public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
@@ -15,5 +15,7 @@ namespace Melodia.Domain.Abstractions
         public static Error NotFound(string code, string description) => new(code, description, ErrorType.NotFound);
         public static Error Conflict(string code, string description) => new(code, description, ErrorType.Conflict);
         public static Error Forbidden(string code, string description) => new(code, description, ErrorType.Forbidden);
+
+        public static Error Unauthorized(string code, string description) => new(code, description, ErrorType.Unauthorized);
     }
 }
