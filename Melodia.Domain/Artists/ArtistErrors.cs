@@ -15,4 +15,10 @@ public static class ArtistErrors
 
     public static Error BiographyTooLong(int maxLength) =>
         Error.Validation("Artist.BiographyTooLong", $"Biyografi en fazla {maxLength} karakter olabilir.");
+
+    public static readonly Error HasSongs =
+        Error.Conflict("Artist.HasSongs", "Bu sanatçıya ait şarkılar var; önce şarkıları silin.");
+
+    public static readonly Error HasAlbums =
+        Error.Conflict("Artist.HasAlbums", "Bu sanatçıya ait albümler var; önce albümleri silin.");
 }

@@ -15,4 +15,7 @@ public static class AlbumErrors
 
     public static readonly Error ArtistMismatch =
         Error.Conflict("Album.ArtistMismatch", "Şarkı, sanatçısına ait olmayan bir albüme eklenemez.");
+
+    public static readonly Error HasSongs =
+        Error.Conflict("Album.HasSongs", "Bu albümde şarkılar var; önce şarkıları albümden çıkarın.");
 }

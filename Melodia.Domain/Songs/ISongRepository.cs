@@ -7,4 +7,6 @@ public interface ISongRepository
     void Remove(Song song);
 
     Task<bool> ExistsByGenreAsync(Guid genreId, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByArtistAsync(Guid artistId, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByAlbumAsync(Guid albumId, CancellationToken cancellationToken = default);
 }
