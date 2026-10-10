@@ -338,7 +338,7 @@ Kapsanan ana senaryolar:
 
 ## Yol Haritası
 
-- [ ] Angular istemci
+
 - [ ] Domain kuralları için unit testler (`PlaybackPolicy`, `Playlist`, `Package`)
 - [ ] Outbox pattern ile güvenilir domain event / e-posta gönderimi
 - [ ] Süresi dolmuş refresh token'ları temizleyen arka plan işi
