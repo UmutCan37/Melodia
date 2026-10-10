@@ -36,6 +36,8 @@ public sealed class Song : Entity
     public AudioFile AudioFile { get; private set; } = null!;
     public Package RequiredPackage { get; private set; } = null!;
 
+    public bool IsDeleted { get; private set; }
+    public DateTime? DeletedAtUtc { get; private set; }
     public static Result<Song> Create(
         string title,
         Duration duration,
@@ -82,6 +84,14 @@ public sealed class Song : Entity
 
     public void RemoveFromAlbum() => AlbumId = null;
 
+    public void Delete(DateTime deletedAtUtc)
+    {
+        if (IsDeleted)
+            return;
+
+        IsDeleted = true;
+        DeletedAtUtc = deletedAtUtc;
+    }
     private static Result<string> ValidateTitle(string? title)
     {
         if (string.IsNullOrWhiteSpace(title))

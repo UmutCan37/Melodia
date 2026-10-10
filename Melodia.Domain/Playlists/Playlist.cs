@@ -33,6 +33,9 @@ public sealed class Playlist : Entity
         return new Playlist(Guid.CreateVersion7(), ownerId, nameResult.Value);
     }
 
+    public Result EnsureOwner(Guid requesterId) =>
+    requesterId == OwnerId ? Result.Success() : PlaylistErrors.NotOwner;
+
     public Result Rename(Guid requesterId, string name)
     {
         if (requesterId != OwnerId)
