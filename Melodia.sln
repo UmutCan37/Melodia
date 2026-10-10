@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Melodia.Persistence", "Melo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Melodia.Infrastructure", "Melodia.Infrastructure\Melodia.Infrastructure.csproj", "{C325D987-EA1D-4B0C-A6C6-57279515830B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Melodia.Presentation", "Melodia.Presentation\Melodia.Presentation.csproj", "{247122A2-61E6-4D24-9658-BED2DC07000E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Melodia.Api", "Melodia.Api\Melodia.Api.csproj", "{576114F8-E17B-4126-93BA-C6475C356E7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,14 @@ Global
 		{C325D987-EA1D-4B0C-A6C6-57279515830B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C325D987-EA1D-4B0C-A6C6-57279515830B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C325D987-EA1D-4B0C-A6C6-57279515830B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{247122A2-61E6-4D24-9658-BED2DC07000E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{247122A2-61E6-4D24-9658-BED2DC07000E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{247122A2-61E6-4D24-9658-BED2DC07000E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{247122A2-61E6-4D24-9658-BED2DC07000E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{576114F8-E17B-4126-93BA-C6475C356E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{576114F8-E17B-4126-93BA-C6475C356E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{576114F8-E17B-4126-93BA-C6475C356E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{576114F8-E17B-4126-93BA-C6475C356E7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +56,8 @@ Global
 		{773DAC6E-4383-4516-8823-E639E3335E69} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4C0CD883-B977-4F5D-B216-56573AE20199} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C325D987-EA1D-4B0C-A6C6-57279515830B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{247122A2-61E6-4D24-9658-BED2DC07000E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{576114F8-E17B-4126-93BA-C6475C356E7B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {56C20287-302E-40F4-B3B6-67B58CEECC29}
