@@ -1,0 +1,91 @@
+<app-auth-shell
+  eyebrow="ÜCRETSİZ BAŞLA"
+  heading="Basic ile başla, istediğin an yükselt."
+  text="Her yeni hesap Basic paketle açılır. Paketini profilinden istediğin zaman değiştirebilirsin."
+>
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <header class="form__header">
+      <h1>Hesap oluştur</h1>
+      <p>Zaten hesabın var mı? <a routerLink="/login">Giriş yap</a></p>
+    </header>
+
+    @if (problem(); as p) {
+      @if (!p.errors) {
+        <p-message severity="error" icon="pi pi-exclamation-circle">
+          <div class="problem">
+            <strong>{{ p.title }}</strong>
+            @if (p.errorCode) {
+              <small>{{ p.status }} · {{ p.errorCode }}</small>
+            }
+          </div>
+        </p-message>
+      }
+    }
+
+    <div class="field">
+      <label for="displayName">Ad soyad</label>
+      <input pInputText id="displayName" formControlName="displayName" autocomplete="name" />
+      @if (form.controls.displayName.touched && form.controls.displayName.invalid) {
+        <small class="field__error">Adını gir.</small>
+      } @else if (serverError('displayName'); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="email">E-posta</label>
+      <input
+        pInputText
+        id="email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        placeholder="ornek@melodia.local"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field__error">Geçerli bir e-posta gir.</small>
+      } @else if (serverError('email'); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">Şifre</label>
+      <p-password
+        inputId="password"
+        formControlName="password"
+        autocomplete="new-password"
+        [toggleMask]="true"
+        [fluid]="true"
+        promptLabel="Bir şifre belirle"
+        weakLabel="Zayıf"
+        mediumLabel="Orta"
+        strongLabel="Güçlü"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <small class="field__error">Şifre en az 8 karakter olmalı.</small>
+      } @else if (serverError('password'); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      } @else {
+        <small class="field__hint">En az 8 karakter; harf ve rakam kullan.</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="confirmPassword">Şifre tekrar</label>
+      <p-password
+        inputId="confirmPassword"
+        formControlName="confirmPassword"
+        autocomplete="new-password"
+        [feedback]="false"
+        [toggleMask]="true"
+        [fluid]="true"
+      />
+      @if (form.controls.confirmPassword.touched && form.hasError('passwordsMismatch')) {
+        <small class="field__error">Şifreler eşleşmiyor.</small>
+      }
+    </div>
+
+    <p-button type="submit" label="Hesap oluştur" [loading]="loading()" [fluid]="true" />
+  </form>
+</app-auth-shell>

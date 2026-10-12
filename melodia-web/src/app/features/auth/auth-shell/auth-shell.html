@@ -1,0 +1,26 @@
+<div class="auth">
+  <aside class="auth__showcase">
+    <div class="brand">
+      <span class="brand__mark"><i class="pi pi-wave-pulse"></i></span>
+      <span class="brand__name">MELODIA</span>
+    </div>
+
+    <div class="showcase">
+      <span class="showcase__eyebrow">{{ eyebrow() }}</span>
+      <h2>{{ heading() }}</h2>
+      <p>{{ text() }}</p>
+      <div class="tiers">
+        <span class="tier tier--basic">BASIC</span>
+        <span class="tier tier--gold">GOLD</span>
+        <span class="tier tier--premium">PREMIUM</span>
+        <span class="tier tier--elit">ELİT</span>
+      </div>
+    </div>
+
+    <p class="auth__footnote">Akış bağlantıları imzalı ve 5 dakika geçerli.</p>
+  </aside>
+
+  <main class="auth__main">
+    <ng-content />
+  </main>
+</div>

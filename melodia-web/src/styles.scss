@@ -1,0 +1,149 @@
+@use 'primeicons/primeicons.css';
+
+:root {
+  // Zemin ve yüzeyler
+  --mel-bg: #0a0c10;
+  --mel-surface: #12151d;
+  --mel-surface-2: #1a1f2c;
+  --mel-border: #222736;
+
+  // Metin
+  --mel-text: #f8fafc;
+  --mel-text-2: #bccac0;
+  --mel-muted: #8e9bae;
+  --mel-faint: #5b6578;
+
+  // Ana renk (mint)
+  --mel-primary: #68dba9;
+  --mel-primary-hover: #85f8c4;
+  --mel-on-primary: #003825;
+
+  // Hata
+  --mel-danger: #ffb4ab;
+  --mel-danger-bg: #93000a;
+  --mel-danger-fg: #ffdad6;
+
+  // Paket rozetleri
+  --mel-basic-bg: rgba(100, 116, 139, 0.12);
+  --mel-basic-fg: #cbd5e1;
+  --mel-gold-bg: rgba(245, 158, 11, 0.12);
+  --mel-gold-fg: #fbbf24;
+  --mel-premium-bg: rgba(16, 185, 129, 0.12);
+  --mel-premium-fg: #34d399;
+  --mel-elit-bg: rgba(139, 92, 246, 0.14);
+  --mel-elit-fg: #c4b5fd;
+
+  // Fontlar
+  --mel-font-heading: 'Manrope', system-ui, sans-serif;
+  --mel-font-body: 'Hanken Grotesk', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--mel-bg);
+  color: var(--mel-text);
+  font-family: var(--mel-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--mel-font-heading);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+a {
+  color: var(--mel-primary);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--mel-primary-hover);
+  }
+}
+// Formlar (login, register, admin, playlist... hepsi kullanır)
+.form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    h1 {
+      font-size: 28px;
+      line-height: 36px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 15px;
+      color: var(--mel-muted);
+    }
+
+    a {
+      font-weight: 600;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mel-text-2);
+  }
+
+  input {
+    width: 100%;
+  }
+
+  &__error {
+    font-size: 12px;
+    color: var(--mel-danger);
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: var(--mel-faint);
+  }
+}
+
+.problem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  small {
+    opacity: 0.8;
+  }
+}
+
+// PrimeNG butonları tasarımdaki gibi Manrope ve kalın
+.p-button .p-button-label {
+  font-family: var(--mel-font-heading);
+  font-weight: 700;
+}
