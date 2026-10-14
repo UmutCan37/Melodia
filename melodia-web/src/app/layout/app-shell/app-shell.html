@@ -1,0 +1,50 @@
+<div class="shell">
+  <aside class="sidebar">
+    <a routerLink="/" class="brand">
+      <span class="brand__mark"><i class="pi pi-wave-pulse"></i></span>
+      <span class="brand__name">MELODIA</span>
+    </a>
+
+    <nav class="nav" aria-label="Ana menü">
+      @for (item of nav; track item.link) {
+        <a
+          class="nav__link"
+          [routerLink]="item.link"
+          routerLinkActive="nav__link--active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+          ariaCurrentWhenActive="page"
+        >
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+
+      @if (isAdmin()) {
+        <span class="nav__section">YÖNETİM</span>
+        <a class="nav__link" routerLink="/admin" routerLinkActive="nav__link--active">
+          <i class="pi pi-shield"></i>
+          <span>Admin paneli</span>
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar__spacer"></div>
+        @if (user()?.package; as pkg) {
+  <app-package-badge [tier]="pkg" />
+}
+      <button type="button" class="user" (click)="menu.toggle($event)" aria-haspopup="menu">
+        <p-avatar [label]="initial()" shape="circle" styleClass="user__avatar" />
+        <span class="user__email">{{ displayName() }}</span>
+        <i class="pi pi-chevron-down"></i>
+      </button>
+      <p-menu #menu [model]="userMenu" [popup]="true" appendTo="body" />
+    </header>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

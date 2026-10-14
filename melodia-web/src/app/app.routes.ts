@@ -17,12 +17,18 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/register-page/register-page').then((m) => m.RegisterPage),
   },
-  {
+{
     path: '',
-    title: 'Melodia',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/home/home-page/home-page').then((m) => m.HomePage),
+    loadComponent: () => import('./layout/app-shell/app-shell').then((m) => m.AppShell),
+    children: [
+      {
+        path: '',
+        title: 'Melodia',
+        loadComponent: () =>
+          import('./features/home/home-page/home-page').then((m) => m.HomePage),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

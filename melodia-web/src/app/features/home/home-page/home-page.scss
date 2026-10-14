@@ -1,0 +1,328 @@
+:host {
+  display: block;
+}
+
+.home {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    h1 {
+      font-size: 28px;
+      line-height: 36px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--mel-muted);
+    }
+  }
+}
+
+// Tür çipleri
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--mel-border);
+  border-radius: 999px;
+  background: var(--mel-surface);
+  color: var(--mel-text-2);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+
+  &:hover {
+    border-color: var(--mel-faint);
+  }
+
+  &--active {
+    background: var(--mel-primary);
+    border-color: var(--mel-primary);
+    color: var(--mel-on-primary);
+    font-weight: 700;
+  }
+}
+
+// Üst kısım: kaldığın yerden + paket kartı
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+.empty {
+  margin: 0;
+  padding: 24px;
+  border: 1px dashed var(--mel-border);
+  border-radius: 12px;
+  color: var(--mel-muted);
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  padding: 12px;
+  border: 1px solid var(--mel-border);
+  border-radius: 12px;
+  background: var(--mel-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: var(--mel-surface-2);
+  }
+
+  &__art {
+    aspect-ratio: 1;
+    border-radius: 8px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    strong {
+      font-family: var(--mel-font-heading);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      font-size: 13px;
+      color: var(--mel-muted);
+    }
+
+    small {
+      font-size: 12px;
+      color: var(--mel-primary);
+    }
+  }
+}
+
+.plan {
+  padding: 20px;
+  border: 1px solid var(--mel-border);
+  border-radius: 16px;
+  background: var(--mel-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+
+  &__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--mel-muted);
+  }
+
+  &__stats {
+    margin: 0;
+    color: var(--mel-text-2);
+
+    strong {
+      color: var(--mel-text);
+    }
+  }
+
+  &__cta {
+    align-self: stretch;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--mel-primary);
+    color: var(--mel-on-primary);
+    font-family: var(--mel-font-heading);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+
+    &:hover {
+      background: var(--mel-primary-hover);
+      color: var(--mel-on-primary);
+    }
+  }
+}
+
+// Şarkı listesi
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--mel-border);
+  border-radius: 16px;
+  background: var(--mel-surface);
+  overflow: hidden;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 24px 36px 40px minmax(0, 1fr) 120px 80px 48px 88px;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 8px 20px;
+
+  & + & {
+    border-top: 1px solid var(--mel-border);
+  }
+
+  &:hover {
+    background: var(--mel-surface-2);
+  }
+
+  &__index {
+    color: var(--mel-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__play,
+  &__lock {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+  }
+
+  &__play {
+    border: 0;
+    background: var(--mel-primary);
+    color: var(--mel-on-primary);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--mel-primary-hover);
+    }
+  }
+
+  &__lock {
+    border: 1px solid var(--mel-border);
+    color: var(--mel-faint);
+  }
+
+  &__art {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-family: var(--mel-font-heading);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      font-size: 13px;
+      color: var(--mel-muted);
+    }
+  }
+
+  &__genre,
+  &__duration {
+    color: var(--mel-muted);
+  }
+
+  &__duration {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+app-package-badge {
+  justify-self: start;
+}
+  &__unlock {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  &--locked {
+    .row__title strong {
+      color: var(--mel-text-2);
+    }
+
+    .row__art {
+      opacity: 0.5;
+    }
+  }
+
+  &--skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--mel-surface) 0%,
+      var(--mel-surface-2) 50%,
+      var(--mel-surface) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite linear;
+  }
+
+  @media (max-width: 760px) {
+    grid-template-columns: 36px 40px minmax(0, 1fr) 48px;
+
+    &__index,
+    &__genre,
+    app-package-badge,
+    &__unlock {
+      display: none;
+    }
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}

@@ -9,12 +9,12 @@
       <span class="showcase__eyebrow">{{ eyebrow() }}</span>
       <h2>{{ heading() }}</h2>
       <p>{{ text() }}</p>
-      <div class="tiers">
-        <span class="tier tier--basic">BASIC</span>
-        <span class="tier tier--gold">GOLD</span>
-        <span class="tier tier--premium">PREMIUM</span>
-        <span class="tier tier--elit">ELİT</span>
-      </div>
+<div class="tiers">
+  <app-package-badge tier="Basic" />
+  <app-package-badge tier="Gold" />
+  <app-package-badge tier="Premium" />
+  <app-package-badge tier="Elit" />
+</div>
     </div>
 
     <p class="auth__footnote">Akış bağlantıları imzalı ve 5 dakika geçerli.</p>

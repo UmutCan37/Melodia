@@ -147,3 +147,31 @@ a {
   font-family: var(--mel-font-heading);
   font-weight: 700;
 }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--mel-primary);
+    color: var(--mel-on-primary);
+  }
+
+  &__name {
+    font-family: var(--mel-font-heading);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+  }
+}
+// Klavye odağı: tarayıcının beyaz çerçevesi yerine mint
+:focus-visible {
+  outline: 2px solid var(--mel-primary);
+  outline-offset: 2px;
+}
