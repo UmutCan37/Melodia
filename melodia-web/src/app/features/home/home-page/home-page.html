@@ -66,7 +66,7 @@
       <div class="cards">
         @for (item of recommendations(); track item.songId) {
           <button type="button" class="card" (click)="playItem(item)">
-            <span class="card__art" [style.background]="art(item.genreName)"></span>
+            <app-cover class="card__art" [name]="item.artistName" />
             <div class="card__info">
               <strong>{{ item.title }}</strong>
               <span>{{ item.artistName }}</span>
