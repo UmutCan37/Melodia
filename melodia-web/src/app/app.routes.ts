@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { authGuard, guestGuard } from './core/auth/auth.guards';
+import { adminGuard,authGuard, guestGuard } from './core/auth/auth.guards';
 
 export const routes: Routes = [
   {
@@ -59,6 +59,11 @@ export const routes: Routes = [
           import('./features/playlists/playlist-detail-page/playlist-detail-page').then(
             (m) => m.PlaylistDetailPage,
           ),
+      },
+            {
+        path: 'admin',
+        canMatch: [adminGuard],
+        loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
       },
     ],
   },

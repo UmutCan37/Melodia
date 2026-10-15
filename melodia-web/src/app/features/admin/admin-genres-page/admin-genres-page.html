@@ -1,0 +1,55 @@
+<div class="toolbar">
+  <span class="muted">{{ genres().length }} tür</span>
+  <p-button label="Yeni tür" icon="pi pi-plus" (onClick)="openCreate()" />
+</div>
+
+<div class="table-card">
+  <p-table [value]="genres()" [loading]="loading()" dataKey="id">
+    <ng-template #header>
+      <tr>
+        <th>Tür</th>
+        <th class="actions"><span class="sr-only">İşlemler</span></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-genre>
+      <tr>
+        <td class="strong">{{ genre.name }}</td>
+        <td class="actions">
+          <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
+            [ariaLabel]="genre.name + ' yeniden adlandır'" (onClick)="openEdit(genre)" />
+          <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+            [ariaLabel]="genre.name + ' sil'" (onClick)="remove(genre)" />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr><td colspan="2" class="empty">Henüz tür yok.</td></tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [header]="editingId() ? 'Türü yeniden adlandır' : 'Yeni tür'"
+  [visible]="dialogOpen()"
+  (visibleChange)="dialogOpen.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '420px', maxWidth: 'calc(100vw - 32px)' }"
+>
+  <form class="dialog-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (problem(); as p) {
+      <p-message severity="error">{{ p.title }}</p-message>
+    }
+    <div class="field">
+      <label for="genre-name">Ad</label>
+      <input pInputText id="genre-name" formControlName="name" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="field__error">Ad gerekli.</small>
+      }
+    </div>
+    <div class="dialog-form__actions">
+      <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="dialogOpen.set(false)" />
+      <p-button type="submit" label="Kaydet" [loading]="saving()" />
+    </div>
+  </form>
+</p-dialog>

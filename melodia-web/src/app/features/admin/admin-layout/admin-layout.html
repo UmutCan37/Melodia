@@ -1,0 +1,23 @@
+<div class="admin">
+  <header class="admin__header">
+    <span class="admin__eyebrow">YÖNETİM</span>
+    <h1>Katalog yönetimi</h1>
+  </header>
+
+  <nav class="tabs" aria-label="Yönetim bölümleri">
+    @for (tab of tabs; track tab.link) {
+      <a
+        class="tabs__link"
+        [routerLink]="tab.link"
+        routerLinkActive="tabs__link--active"
+        ariaCurrentWhenActive="page"
+      >
+        <i [class]="tab.icon"></i>{{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <router-outlet />
+</div>
+
+<p-confirmdialog />

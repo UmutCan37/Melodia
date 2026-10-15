@@ -1,0 +1,79 @@
+<div class="toolbar">
+  <p-iconfield class="toolbar__search">
+    <p-inputicon styleClass="pi pi-search" />
+    <input
+      pInputText
+      type="search"
+      placeholder="Sanatçı ara"
+      aria-label="Sanatçı ara"
+      [value]="search()"
+      (input)="onSearch($any($event.target).value)"
+    />
+  </p-iconfield>
+  <p-button label="Yeni sanatçı" icon="pi pi-plus" (onClick)="openCreate()" />
+</div>
+
+<div class="table-card">
+  <p-table [value]="result()?.items ?? []" [loading]="loading()" dataKey="id">
+    <ng-template #header>
+      <tr>
+        <th>Sanatçı</th>
+        <th class="actions"><span class="sr-only">İşlemler</span></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-artist>
+      <tr>
+        <td class="strong">{{ artist.name }}</td>
+        <td class="actions">
+          <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
+            [ariaLabel]="artist.name + ' düzenle'" (onClick)="openEdit(artist)" />
+          <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+            [ariaLabel]="artist.name + ' sil'" (onClick)="remove(artist)" />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr><td colspan="2" class="empty">Sanatçı bulunamadı.</td></tr>
+    </ng-template>
+  </p-table>
+
+  @if (result(); as r) {
+    <div class="table-footer">
+      <span class="muted">{{ r.totalCount }} sanatçı</span>
+      @if (r.totalPages > 1) {
+        <p-paginator [rows]="pageSize" [totalRecords]="r.totalCount"
+          [first]="(r.page - 1) * r.pageSize" (onPageChange)="onPage($event)" />
+      }
+    </div>
+  }
+</div>
+
+<p-dialog
+  [header]="editingId() ? 'Sanatçıyı düzenle' : 'Yeni sanatçı'"
+  [visible]="dialogOpen()"
+  (visibleChange)="dialogOpen.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '480px', maxWidth: 'calc(100vw - 32px)' }"
+>
+  <form class="dialog-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (problem(); as p) {
+      <p-message severity="error">{{ p.title }}</p-message>
+    }
+    <div class="field">
+      <label for="artist-name">Ad</label>
+      <input pInputText id="artist-name" formControlName="name" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="field__error">Ad gerekli.</small>
+      }
+    </div>
+    <div class="field">
+      <label for="artist-bio">Biyografi <span class="muted">(opsiyonel)</span></label>
+      <textarea pTextarea id="artist-bio" rows="4" formControlName="biography"></textarea>
+    </div>
+    <div class="dialog-form__actions">
+      <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="dialogOpen.set(false)" />
+      <p-button type="submit" label="Kaydet" [loading]="saving()" />
+    </div>
+  </form>
+</p-dialog>

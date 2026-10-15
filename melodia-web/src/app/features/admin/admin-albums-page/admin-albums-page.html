@@ -1,0 +1,94 @@
+<div class="toolbar">
+  <p-iconfield class="toolbar__search">
+    <p-inputicon styleClass="pi pi-search" />
+    <input
+      pInputText
+      type="search"
+      placeholder="Albüm ara"
+      aria-label="Albüm ara"
+      [value]="search()"
+      (input)="onSearch($any($event.target).value)"
+    />
+  </p-iconfield>
+  <p-button label="Yeni albüm" icon="pi pi-plus" (onClick)="openCreate()" />
+</div>
+
+<div class="table-card">
+  <p-table [value]="result()?.items ?? []" [loading]="loading()" dataKey="id">
+    <ng-template #header>
+      <tr>
+        <th>Albüm</th>
+        <th>Sanatçı</th>
+        <th>Çıkış</th>
+        <th class="actions"><span class="sr-only">İşlemler</span></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-album>
+      <tr>
+        <td class="strong">{{ album.title }}</td>
+        <td class="muted">{{ album.artistName }}</td>
+        <td class="muted">{{ album.releaseDate | date: 'd MMMM y' }}</td>
+        <td class="actions">
+          <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
+            [ariaLabel]="album.title + ' düzenle'" (onClick)="openEdit(album)" />
+          <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+            [ariaLabel]="album.title + ' sil'" (onClick)="remove(album)" />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr><td colspan="4" class="empty">Albüm bulunamadı.</td></tr>
+    </ng-template>
+  </p-table>
+
+  @if (result(); as r) {
+    <div class="table-footer">
+      <span class="muted">{{ r.totalCount }} albüm</span>
+      @if (r.totalPages > 1) {
+        <p-paginator [rows]="pageSize" [totalRecords]="r.totalCount"
+          [first]="(r.page - 1) * r.pageSize" (onPageChange)="onPage($event)" />
+      }
+    </div>
+  }
+</div>
+
+<p-dialog
+  [header]="editingId() ? 'Albümü düzenle' : 'Yeni albüm'"
+  [visible]="dialogOpen()"
+  (visibleChange)="dialogOpen.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '480px', maxWidth: 'calc(100vw - 32px)' }"
+>
+  <form class="dialog-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (problem(); as p) {
+      <p-message severity="error">{{ p.title }}</p-message>
+    }
+    <div class="field">
+      <label for="album-title">Başlık</label>
+      <input pInputText id="album-title" formControlName="title" />
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <small class="field__error">Başlık gerekli.</small>
+      }
+    </div>
+    <div class="field">
+      <label for="album-artist">Sanatçı</label>
+      <p-select inputId="album-artist" formControlName="artistId" [options]="artists()"
+        optionLabel="name" optionValue="id" placeholder="Seç" [filter]="true" appendTo="body" />
+      @if (form.controls.artistId.touched && form.controls.artistId.invalid) {
+        <small class="field__error">Sanatçı seç.</small>
+      }
+    </div>
+    <div class="field">
+      <label for="album-date">Çıkış tarihi</label>
+      <input pInputText id="album-date" type="date" formControlName="releaseDate" />
+      @if (form.controls.releaseDate.touched && form.controls.releaseDate.invalid) {
+        <small class="field__error">Tarih gerekli.</small>
+      }
+    </div>
+    <div class="dialog-form__actions">
+      <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="dialogOpen.set(false)" />
+      <p-button type="submit" label="Kaydet" [loading]="saving()" />
+    </div>
+  </form>
+</p-dialog>

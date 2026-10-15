@@ -1,0 +1,89 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+
+  &__search {
+    flex: 1 1 280px;
+    max-width: 360px;
+
+    input {
+      width: 100%;
+    }
+  }
+}
+
+.table-card {
+  border: 1px solid var(--mel-border);
+  border-radius: 16px;
+  background: var(--mel-surface);
+  overflow: hidden;
+}
+
+.table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--mel-border);
+}
+
+.strong {
+  font-family: var(--mel-font-heading);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--mel-muted);
+}
+
+.actions {
+  width: 110px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--mel-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  textarea,
+  input {
+    width: 100%;
+  }
+}
+
+:host ::ng-deep p-select {
+  width: 100%;
+}

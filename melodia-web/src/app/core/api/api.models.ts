@@ -90,3 +90,28 @@ export interface PlaylistDetail {
   name: string;
   songs: PlaylistSong[];
 }
+
+export interface ArtistListItem {
+  id: string;
+  name: string;
+}
+
+export interface AlbumListItem {
+  id: string;
+  title: string;
+  artistId: string;
+  artistName: string;
+  releaseDate: string;
+}
+
+export interface ListQuery {
+  search?: string;
+  artistId?: string;
+  page?: number;
+  pageSize?: number;
+}
+export interface ArtistDetail {
+  id: string;
+  name: string;
+  biography: string | null;
+}

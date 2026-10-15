@@ -8,11 +8,12 @@
 @if (player.current(); as song) {
   <div class="bar">
     <div class="bar__song">
-      <span class="bar__art" aria-hidden="true">
-        <span class="eq" [class.eq--on]="player.isPlaying()">
-          <i></i><i></i><i></i>
-        </span>
-      </span>
+<span class="bar__art" aria-hidden="true">
+  <app-cover class="bar__cover" [name]="song.artistName" />
+  <span class="eq" [class.eq--on]="player.isPlaying()">
+    <i></i><i></i><i></i>
+  </span>
+</span>
       <div class="bar__meta">
         <strong>{{ song.title }}</strong>
         <span>{{ song.artistName }}</span>

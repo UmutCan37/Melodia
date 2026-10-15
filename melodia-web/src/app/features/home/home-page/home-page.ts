@@ -16,10 +16,10 @@ import { PlayerService } from '../../../core/player/player.service';
 import { PackageBadge } from '../../../shared/ui/package-badge/package-badge';
 import { SongList } from '../../../shared/ui/song-list/song-list';
 import { coverArt } from '../../../shared/utils/cover-art';
-
+import { Cover } from '../../../shared/ui/cover/cover';
 @Component({
   selector: 'app-home-page',
-  imports: [RouterLink, PackageBadge, SongList],
+  imports: [RouterLink, PackageBadge, SongList, Cover],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

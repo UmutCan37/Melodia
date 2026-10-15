@@ -24,7 +24,7 @@
           >
             <i class="pi pi-play"></i>
           </button>
-          <span class="row__art" [style.background]="art(row.artistName)"></span>
+          <app-cover class="row__art" [name]="row.artistName" />
           <div class="row__title">
             <strong>{{ row.title }}</strong>
             <span>{{ row.artistName }}</span>

@@ -9,10 +9,11 @@ import { PlayerService } from '../../../core/player/player.service';
 import { DurationPipe } from '../../../shared/pipes/duration-pipe';
 import { coverArt } from '../../../shared/utils/cover-art';
 import { parseUtc } from '../../../shared/utils/date';
+import { Cover } from '../../../shared/ui/cover/cover';
 
 @Component({
   selector: 'app-history-page',
-  imports: [DatePipe, DurationPipe],
+  imports: [DatePipe, DurationPipe, Cover],
   templateUrl: './history-page.html',
   styleUrl: './history-page.scss',
 })

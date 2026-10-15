@@ -18,7 +18,7 @@
         <span class="row__lock" aria-hidden="true"><i class="pi pi-lock"></i></span>
       }
 
-      <span class="row__art" [style.background]="art(song.genreName)"></span>
+      <app-cover class="row__art" [name]="song.artistName" />
       <div class="row__title">
         <strong>{{ song.title }}</strong>
         <span>{{ song.artistName }}</span>

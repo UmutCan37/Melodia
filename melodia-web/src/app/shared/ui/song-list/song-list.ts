@@ -9,13 +9,13 @@ import { coverArt } from '../../utils/cover-art';
 import { PackageBadge } from '../package-badge/package-badge';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Menu, MenuModule } from 'primeng/menu';
-
+import { Cover } from '../cover/cover';
 import { PlaylistSummary } from '../../../core/api/api.models';
 import { PlaylistService } from '../../../core/api/playlist.service';
 import { toProblem } from '../../../core/http/problem-details';
 @Component({
   selector: 'app-song-list',
-  imports: [PackageBadge, DurationPipe, MenuModule],
+  imports: [PackageBadge, DurationPipe, MenuModule, Cover],
   templateUrl: './song-list.html',
   styleUrl: './song-list.scss',
 })

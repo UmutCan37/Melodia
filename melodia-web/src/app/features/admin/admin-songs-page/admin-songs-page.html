@@ -1,0 +1,209 @@
+<div class="toolbar">
+  <p-iconfield class="toolbar__search">
+    <p-inputicon styleClass="pi pi-search" />
+    <input
+      pInputText
+      type="search"
+      placeholder="Başlıkta ara"
+      aria-label="Şarkı ara"
+      [value]="search()"
+      (input)="onSearch($any($event.target).value)"
+    />
+  </p-iconfield>
+  <p-button label="Yeni şarkı" icon="pi pi-plus" (onClick)="openCreate()" />
+</div>
+
+<div class="table-card">
+  <p-table [value]="result()?.items ?? []" [loading]="loading()" dataKey="id">
+    <ng-template #header>
+      <tr>
+        <th>Şarkı</th>
+        <th>Albüm</th>
+        <th>Tür</th>
+        <th>Paket</th>
+        <th class="num">Süre</th>
+        <th class="actions"><span class="sr-only">İşlemler</span></th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-song>
+      <tr>
+        <td>
+          <div class="cell-title">
+            <strong>{{ song.title }}</strong>
+            <span>{{ song.artistName }}</span>
+          </div>
+        </td>
+        <td class="muted">{{ song.albumTitle ?? '—' }}</td>
+        <td class="muted">{{ song.genreName }}</td>
+        <td><app-package-badge [tier]="song.requiredPackage" /></td>
+        <td class="num muted">{{ song.durationSeconds | duration }}</td>
+        <td class="actions">
+          <p-button
+            icon="pi pi-pencil"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary"
+            [ariaLabel]="song.title + ' düzenle'"
+            (onClick)="openEdit(song)"
+          />
+          <p-button
+            icon="pi pi-trash"
+            [rounded]="true"
+            [text]="true"
+            severity="danger"
+            [ariaLabel]="song.title + ' yayından kaldır'"
+            (onClick)="remove(song)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="6" class="empty">Şarkı bulunamadı.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  @if (result(); as r) {
+    <div class="table-footer">
+      <span class="muted">{{ r.totalCount }} şarkı</span>
+      @if (r.totalPages > 1) {
+        <p-paginator
+          [rows]="pageSize"
+          [totalRecords]="r.totalCount"
+          [first]="(r.page - 1) * r.pageSize"
+          (onPageChange)="onPage($event)"
+        />
+      }
+    </div>
+  }
+</div>
+
+<p-drawer
+  [visible]="drawerOpen()"
+  (visibleChange)="drawerOpen.set($event)"
+  position="right"
+  [header]="editing() ? 'Şarkıyı düzenle' : 'Yeni şarkı'"
+  styleClass="song-drawer"
+>
+  <form class="drawer-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (problem(); as p) {
+      @if (!p.errors) {
+        <p-message severity="error" icon="pi pi-exclamation-circle">{{ p.title }}</p-message>
+      }
+    }
+
+    @if (!editing()) {
+      <label class="upload" [class.upload--error]="fileError()">
+        <input type="file" accept=".mp3,audio/mpeg" (change)="onFile($event)" />
+        <i class="pi pi-cloud-upload"></i>
+        @if (file(); as f) {
+          <strong>{{ f.name }}</strong>
+          <span>{{ (f.size / 1024 / 1024).toFixed(1) }} MB · değiştirmek için tıkla</span>
+        } @else {
+          <strong>MP3 dosyası seç</strong>
+          <span>En fazla 20 MB</span>
+        }
+      </label>
+      @if (fileError(); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      }
+    }
+
+    <div class="field">
+      <label for="song-title">Başlık</label>
+      <input pInputText id="song-title" formControlName="title" />
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <small class="field__error">Başlık gerekli.</small>
+      } @else if (serverError('title'); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      }
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label for="song-artist">Sanatçı</label>
+        <p-select
+          inputId="song-artist"
+          formControlName="artistId"
+          [options]="artists()"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Seç"
+          [filter]="true"
+          appendTo="body"
+          (onChange)="onArtistChange()"
+        />
+        @if (form.controls.artistId.touched && form.controls.artistId.invalid) {
+          <small class="field__error">Sanatçı seç.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="song-genre">Tür</label>
+        <p-select
+          inputId="song-genre"
+          formControlName="genreId"
+          [options]="genres()"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Seç"
+          appendTo="body"
+        />
+        @if (form.controls.genreId.touched && form.controls.genreId.invalid) {
+          <small class="field__error">Tür seç.</small>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="song-album">Albüm <span class="optional">(opsiyonel)</span></label>
+      <p-select
+        inputId="song-album"
+        formControlName="albumId"
+        [options]="albums()"
+        optionLabel="title"
+        optionValue="id"
+        [placeholder]="albums().length ? 'Albüm yok' : 'Önce sanatçı seç'"
+        [showClear]="true"
+        appendTo="body"
+      />
+    </div>
+
+    <div class="field">
+      <label for="song-duration">Süre (saniye)</label>
+      <input
+        pInputText
+        id="song-duration"
+        type="number"
+        min="1"
+        formControlName="durationSeconds"
+        [readonly]="!!editing()"
+      />
+      @if (form.controls.durationSeconds.touched && form.controls.durationSeconds.invalid) {
+        <small class="field__error">Süre sıfırdan büyük olmalı.</small>
+      } @else if (serverError('durationSeconds'); as msg) {
+        <small class="field__error">{{ msg }}</small>
+      } @else if (!editing()) {
+        <small class="field__hint">MP3 seçince otomatik dolar.</small>
+      }
+    </div>
+
+    <div class="field">
+      <span class="field__label">Gerekli paket</span>
+      <p-selectbutton
+        formControlName="requiredPackage"
+        [options]="tiers"
+        [allowEmpty]="false"
+        ariaLabel="Gerekli paket"
+      />
+    </div>
+
+    <div class="drawer-form__actions">
+      <p-button label="İptal" severity="secondary" [text]="true" (onClick)="drawerOpen.set(false)" />
+      <p-button type="submit" label="Kaydet" icon="pi pi-check" [loading]="saving()" />
+    </div>
+  </form>
+</p-drawer>

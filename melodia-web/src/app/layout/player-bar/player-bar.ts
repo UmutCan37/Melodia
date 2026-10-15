@@ -2,10 +2,11 @@ import { Component, computed, inject } from '@angular/core';
 
 import { PlayerService } from '../../core/player/player.service';
 import { DurationPipe } from '../../shared/pipes/duration-pipe';
+import { Cover } from '../../shared/ui/cover/cover';
 
 @Component({
   selector: 'app-player-bar',
-  imports: [DurationPipe],
+  imports: [DurationPipe, Cover],
   templateUrl: './player-bar.html',
   styleUrl: './player-bar.scss',
 })
