@@ -1,0 +1,66 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1>Listelerim</h1>
+      <p>Kendi çalma listelerini oluştur ve düzenle.</p>
+    </div>
+    <p-button label="Yeni liste" icon="pi pi-plus" (onClick)="openCreate()" />
+  </header>
+
+  @if (loading() && lists().length === 0) {
+    <div class="grid">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="skeleton skeleton--card"></div>
+      }
+    </div>
+  } @else if (lists().length === 0) {
+    <div class="empty">
+      <i class="pi pi-list"></i>
+      <p>Henüz bir listen yok.</p>
+      <p-button label="İlk listeni oluştur" [text]="true" (onClick)="openCreate()" />
+    </div>
+  } @else {
+    <div class="grid">
+      @for (list of lists(); track list.id) {
+        <a class="card" [routerLink]="['/playlists', list.id]">
+          <span class="card__art" [style.background]="art(list.name)">
+            <i class="pi pi-list"></i>
+          </span>
+          <strong>{{ list.name }}</strong>
+          <span>{{ list.songCount }} şarkı</span>
+        </a>
+      }
+    </div>
+  }
+</div>
+
+<p-dialog
+  header="Yeni liste"
+  [visible]="dialogOpen()"
+  (visibleChange)="dialogOpen.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '420px', maxWidth: 'calc(100vw - 32px)' }"
+>
+  <form class="dialog-form" (ngSubmit)="create()">
+    @if (problem(); as p) {
+      <p-message severity="error">{{ p.title }}</p-message>
+    }
+    <div class="field">
+      <label for="playlist-name">Liste adı</label>
+      <input
+        pInputText
+        id="playlist-name"
+        name="name"
+        maxlength="100"
+        placeholder="Örn. Spor, Yolculuk"
+        [ngModel]="newName()"
+        (ngModelChange)="newName.set($event)"
+      />
+    </div>
+    <div class="dialog-form__actions">
+      <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="dialogOpen.set(false)" />
+      <p-button type="submit" label="Oluştur" [loading]="saving()" [disabled]="!newName().trim()" />
+    </div>
+  </form>
+</p-dialog>

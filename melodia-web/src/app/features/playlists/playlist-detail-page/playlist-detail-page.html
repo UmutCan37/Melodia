@@ -1,0 +1,118 @@
+@if (loading() && !playlist()) {
+  <div class="skeleton skeleton--hero"></div>
+} @else if (notFound()) {
+  <div class="empty">
+    <i class="pi pi-question-circle"></i>
+    <p>Bu liste bulunamadı ya da sana ait değil.</p>
+    <a routerLink="/playlists">Listelerime dön</a>
+  </div>
+} @else if (playlist(); as list) {
+  <div class="detail">
+    <a routerLink="/playlists" class="detail__back"><i class="pi pi-arrow-left"></i> Listelerim</a>
+
+    <header class="hero">
+      <span class="hero__art" [style.background]="art(list.name)"><i class="pi pi-list"></i></span>
+      <div class="hero__info">
+        <span class="hero__eyebrow">ÇALMA LİSTESİ</span>
+        <h1>{{ list.name }}</h1>
+        <p>{{ songs().length }} şarkı · {{ totalSeconds() | duration }}</p>
+        <div class="hero__actions">
+          <button
+            type="button"
+            class="hero__play"
+            (click)="playAll()"
+            [disabled]="songs().length === unavailableCount()"
+            aria-label="Listeyi çal"
+          >
+            <i class="pi pi-play"></i>
+          </button>
+          <p-button label="Yeniden adlandır" severity="secondary" [outlined]="true" (onClick)="openRename()" />
+          <p-button label="Listeyi sil" severity="danger" [outlined]="true" (onClick)="deleteList()" />
+        </div>
+      </div>
+    </header>
+
+    @if (unavailableCount() > 0) {
+      <div class="notice" role="status">
+        <i class="pi pi-info-circle"></i>
+        Listendeki {{ unavailableCount() }} şarkı yayından kaldırıldı. İstersen listenden çıkarabilirsin.
+      </div>
+    }
+
+    @if (songs().length === 0) {
+      <div class="empty">
+        <i class="pi pi-music"></i>
+        <p>Bu liste boş. Ana sayfa ya da Keşfet'te şarkıların yanındaki <strong>+</strong> ile ekleyebilirsin.</p>
+      </div>
+    } @else {
+      <ol class="list">
+        @for (song of songs(); track song.songId; let i = $index) {
+          @let playing = isCurrent(song.songId) && player.isPlaying();
+          <li class="row" [class.row--off]="!song.isAvailable" [class.row--current]="isCurrent(song.songId)">
+            <span class="row__index">{{ i + 1 }}</span>
+
+            @if (song.isAvailable) {
+              <button
+                type="button"
+                class="row__play"
+                (click)="player.play(toPlayable(song))"
+                [attr.aria-label]="song.title + (playing ? ' duraklat' : ' çal')"
+              >
+                <i [class]="playing ? 'pi pi-pause' : 'pi pi-play'"></i>
+              </button>
+            } @else {
+              <span class="row__lock" aria-hidden="true"><i class="pi pi-ban"></i></span>
+            }
+
+            <div class="row__title">
+              <strong>{{ song.title }}</strong>
+              <span>{{ song.artistName }}{{ song.isAvailable ? '' : ' · Kullanılamıyor' }}</span>
+            </div>
+            <time class="row__added" [attr.datetime]="song.addedAt.toISOString()">
+              {{ song.addedAt | date: 'd MMM' }}
+            </time>
+            <app-package-badge [tier]="song.requiredPackage" />
+            <span class="row__duration">{{ song.durationSeconds | duration }}</span>
+            <button
+              type="button"
+              class="row__remove"
+              (click)="remove(song)"
+              [attr.aria-label]="song.title + ' listeden çıkar'"
+            >
+              <i class="pi pi-minus"></i>
+            </button>
+          </li>
+        }
+      </ol>
+    }
+  </div>
+}
+
+<p-dialog
+  header="Listeyi yeniden adlandır"
+  [visible]="renameOpen()"
+  (visibleChange)="renameOpen.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '420px', maxWidth: 'calc(100vw - 32px)' }"
+>
+  <form class="dialog-form" (ngSubmit)="rename()">
+    <div class="field">
+      <label for="rename">Liste adı</label>
+      <input
+        pInputText
+        id="rename"
+        name="name"
+        maxlength="100"
+        [ngModel]="renameValue()"
+        (ngModelChange)="renameValue.set($event)"
+      />
+    </div>
+    <div class="dialog-form__actions">
+      <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="renameOpen.set(false)" />
+      <p-button type="submit" label="Kaydet" [loading]="renaming()" [disabled]="!renameValue().trim()" />
+    </div>
+  </form>
+</p-dialog>
+
+<p-confirmdialog />

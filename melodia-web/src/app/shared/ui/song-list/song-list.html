@@ -1,0 +1,47 @@
+<ol class="list">
+  @for (song of songs(); track song.id; let i = $index) {
+    @let unlocked = isUnlocked(song);
+    @let playing = isCurrent(song.id) && player.isPlaying();
+    <li class="row" [class.row--locked]="!unlocked" [class.row--current]="isCurrent(song.id)">
+      <span class="row__index">{{ startIndex() + i + 1 }}</span>
+
+      @if (unlocked) {
+        <button
+          type="button"
+          class="row__play"
+          (click)="player.play(song)"
+          [attr.aria-label]="song.title + (playing ? ' duraklat' : ' çal')"
+        >
+          <i [class]="playing ? 'pi pi-pause' : 'pi pi-play'"></i>
+        </button>
+      } @else {
+        <span class="row__lock" aria-hidden="true"><i class="pi pi-lock"></i></span>
+      }
+
+      <span class="row__art" [style.background]="art(song.genreName)"></span>
+      <div class="row__title">
+        <strong>{{ song.title }}</strong>
+        <span>{{ song.artistName }}</span>
+      </div>
+      <span class="row__genre">{{ song.genreName }}</span>
+      <app-package-badge [tier]="song.requiredPackage" />
+      <span class="row__duration">{{ song.durationSeconds | duration }}</span>
+      @if (unlocked) {
+        <button
+          type="button"
+          class="row__add"
+          (click)="openAdd($event, song, addMenuRef)"
+          [attr.aria-label]="song.title + ' listeye ekle'"
+        >
+          <i class="pi pi-plus"></i>
+        </button>
+      } @else {
+        <span></span>
+      }
+      @if (!unlocked) {
+        <button type="button" class="row__unlock" (click)="player.play(song)">KİLİDİ AÇ</button>
+      }
+    </li>
+  }
+</ol>
+<p-menu #addMenuRef [model]="addMenu()" [popup]="true" appendTo="body" />

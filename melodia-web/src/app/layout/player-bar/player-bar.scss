@@ -1,0 +1,239 @@
+:host {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: block;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  height: 88px;
+  padding: 0 24px;
+  background: rgba(18, 21, 29, 0.92);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--mel-border);
+
+  @media (max-width: 760px) {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    .bar__progress,
+    .bar__volume {
+      display: none;
+    }
+  }
+
+  // Sol: şarkı
+  &__song {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  &__art {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1f6f52, #0e2e24);
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong,
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    strong {
+      font-family: var(--mel-font-heading);
+      font-weight: 600;
+    }
+
+    span {
+      font-size: 13px;
+      color: var(--mel-muted);
+    }
+  }
+
+  // Orta: kontroller
+  &__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__toggle {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mel-primary);
+    color: var(--mel-on-primary);
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.15s;
+
+    &:hover:not(:disabled) {
+      background: var(--mel-primary-hover);
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      cursor: progress;
+    }
+  }
+
+  &__progress {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .range {
+      flex: 1;
+    }
+  }
+
+  &__time {
+    width: 36px;
+    font-size: 12px;
+    color: var(--mel-muted);
+    font-variant-numeric: tabular-nums;
+
+    &:first-child {
+      text-align: right;
+    }
+  }
+
+  // Sağ: ses
+  &__volume {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--mel-muted);
+
+    .range {
+      width: 110px;
+    }
+  }
+}
+
+// Kaydırıcı (ilerleme ve ses)
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  margin: 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--mel-primary) var(--fill, 0%),
+    var(--mel-border) var(--fill, 0%)
+  );
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  &::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  &:hover::-webkit-slider-thumb,
+  &:focus-visible::-webkit-slider-thumb {
+    opacity: 1;
+  }
+
+  &:hover::-moz-range-thumb,
+  &:focus-visible::-moz-range-thumb {
+    opacity: 1;
+  }
+}
+
+// Kapaktaki equalizer çubukları
+.eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+
+  i {
+    width: 3px;
+    height: 4px;
+    border-radius: 1px;
+    background: var(--mel-primary);
+  }
+
+  &--on i {
+    animation: bounce 0.9s infinite ease-in-out;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 16px;
+  }
+}
+
+// Hata bildirimi
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 108px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 180, 171, 0.35);
+  border-radius: 10px;
+  background: rgba(147, 0, 10, 0.9);
+  color: var(--mel-danger-fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq--on i {
+    animation: none;
+    height: 10px;
+  }
+}

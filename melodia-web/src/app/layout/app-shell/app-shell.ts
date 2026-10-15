@@ -6,6 +6,9 @@ import { MenuModule } from 'primeng/menu';
 import { PackageBadge } from '../../shared/ui/package-badge/package-badge';
 import { AuthService } from '../../core/auth/auth.service';
 import { MeService } from '../../core/api/me.service';
+import { PlayerBar } from '../player-bar/player-bar';
+import { UpgradeDialog } from '../upgrade-dialog/upgrade-dialog'
+import { ToastModule } from 'primeng/toast';
 
 interface NavItem {
   label: string;
@@ -16,7 +19,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarModule, MenuModule, PackageBadge],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarModule, MenuModule, PackageBadge, PlayerBar, UpgradeDialog,ToastModule],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
 })

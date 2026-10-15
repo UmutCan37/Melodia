@@ -33,13 +33,13 @@
       @if (recent().length > 0) {
         <div class="cards">
           @for (item of recent(); track item.songId) {
-            <article class="card">
+            <button type="button" class="card" (click)="playItem(item)">
               <span class="card__art" [style.background]="art(item.artistName)"></span>
               <div class="card__info">
                 <strong>{{ item.title }}</strong>
                 <span>{{ item.artistName }}</span>
               </div>
-            </article>
+            </button>
           }
         </div>
       } @else {
@@ -65,14 +65,14 @@
       <h2 class="section__title">Sana önerilenler</h2>
       <div class="cards">
         @for (item of recommendations(); track item.songId) {
-          <article class="card">
+          <button type="button" class="card" (click)="playItem(item)">
             <span class="card__art" [style.background]="art(item.genreName)"></span>
             <div class="card__info">
               <strong>{{ item.title }}</strong>
               <span>{{ item.artistName }}</span>
               <small>{{ item.reason }}</small>
             </div>
-          </article>
+          </button>
         }
       </div>
     </section>
@@ -82,43 +82,13 @@
     <h2 class="section__title">Şarkılar</h2>
 
     @if (loadingSongs()) {
-      <div class="list">
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <div class="row row--skeleton"></div>
-        }
-      </div>
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div class="skeleton"></div>
+      }
     } @else if (songs().length === 0) {
       <p class="empty">Bu türde şarkı bulunamadı.</p>
     } @else {
-      <ol class="list">
-        @for (song of songs(); track song.id; let i = $index) {
-          @let unlocked = isUnlocked(song);
-          <li class="row" [class.row--locked]="!unlocked">
-            <span class="row__index">{{ i + 1 }}</span>
-
-            @if (unlocked) {
-              <button type="button" class="row__play" [attr.aria-label]="song.title + ' çal'">
-                <i class="pi pi-play"></i>
-              </button>
-            } @else {
-              <span class="row__lock" aria-hidden="true"><i class="pi pi-lock"></i></span>
-            }
-
-            <span class="row__art" [style.background]="art(song.genreName)"></span>
-            <div class="row__title">
-              <strong>{{ song.title }}</strong>
-              <span>{{ song.artistName }}</span>
-            </div>
-            <span class="row__genre">{{ song.genreName }}</span>
-            <app-package-badge [tier]="song.requiredPackage" />
-            <span class="row__duration">{{ song.durationSeconds | duration }}</span>
-
-            @if (!unlocked) {
-              <a routerLink="/packages" class="row__unlock">KİLİDİ AÇ</a>
-            }
-          </li>
-        }
-      </ol>
+      <app-song-list [songs]="songs()" />
     }
   </section>
 </div>

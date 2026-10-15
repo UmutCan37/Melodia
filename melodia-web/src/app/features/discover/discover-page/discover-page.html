@@ -1,0 +1,57 @@
+<div class="discover">
+  <header class="discover__header">
+    <h1>Keşfet</h1>
+    <p>Şarkı, sanatçı ya da albüm ara.</p>
+  </header>
+
+  <div class="filters">
+    <p-iconfield class="filters__search">
+      <p-inputicon styleClass="pi pi-search" />
+      <input
+        pInputText
+        type="search"
+        placeholder="Örn. Tarkan, Gülümse..."
+        aria-label="Ara"
+        [value]="search()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </p-iconfield>
+
+    <p-select
+      [options]="genres()"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Tüm türler"
+      [showClear]="true"
+      [ngModel]="genreId()"
+      (ngModelChange)="onGenre($event)"
+      ariaLabel="Tür"
+      class="filters__genre"
+    />
+  </div>
+
+  @if (loading()) {
+    @for (i of [1, 2, 3, 4, 5]; track i) {
+      <div class="skeleton"></div>
+    }
+  } @else if (result(); as r) {
+    <p class="discover__count">{{ r.totalCount }} şarkı bulundu</p>
+
+    @if (r.items.length > 0) {
+      <app-song-list [songs]="r.items" [startIndex]="(r.page - 1) * r.pageSize" />
+
+      @if (r.totalPages > 1) {
+        <p-paginator
+          [rows]="pageSize"
+          [totalRecords]="r.totalCount"
+          [first]="(r.page - 1) * r.pageSize"
+          (onPageChange)="onPage($event)"
+        />
+      }
+    } @else {
+      <p class="empty">Aramana uygun şarkı bulunamadı. Başka bir şey dene.</p>
+    }
+  } @else {
+    <p class="empty">Şarkılar yüklenemedi. Bağlantını kontrol edip tekrar dene.</p>
+  }
+</div>

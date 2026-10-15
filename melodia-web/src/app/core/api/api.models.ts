@@ -68,3 +68,25 @@ export interface PlayResponse {
   songId: string;
   streamUrl: string;
 }
+export interface PlaylistSummary {
+  id: string;
+  name: string;
+  songCount: number;
+}
+
+export interface PlaylistSong {
+  songId: string;
+  position: number;
+  title: string;
+  artistName: string;
+  durationSeconds: number;
+  requiredPackage: PackageName;
+  addedAtUtc: string;
+  isAvailable: boolean;
+}
+
+export interface PlaylistDetail {
+  id: string;
+  name: string;
+  songs: PlaylistSong[];
+}

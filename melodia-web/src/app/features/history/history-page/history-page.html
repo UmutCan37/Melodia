@@ -1,0 +1,40 @@
+<div class="history">
+  <header class="history__header">
+    <h1>Geçmiş</h1>
+    <p>Son dinlediğin 50 şarkı.</p>
+  </header>
+
+  @if (loading()) {
+    @for (i of [1, 2, 3, 4, 5]; track i) {
+      <div class="skeleton"></div>
+    }
+  } @else if (failed()) {
+    <p class="empty">Geçmiş yüklenemedi. Bağlantını kontrol edip tekrar dene.</p>
+  } @else if (rows().length === 0) {
+    <p class="empty">Henüz bir şey dinlemedin.</p>
+  } @else {
+    <ol class="list">
+      @for (row of rows(); track $index) {
+        <li class="row">
+          <button
+            type="button"
+            class="row__play"
+            (click)="play(row)"
+            [attr.aria-label]="row.title + ' çal'"
+          >
+            <i class="pi pi-play"></i>
+          </button>
+          <span class="row__art" [style.background]="art(row.artistName)"></span>
+          <div class="row__title">
+            <strong>{{ row.title }}</strong>
+            <span>{{ row.artistName }}</span>
+          </div>
+          <time class="row__time" [attr.datetime]="row.listenedAt.toISOString()">
+            {{ row.listenedAt | date: 'd MMM, HH:mm' }}
+          </time>
+          <span class="row__duration">{{ row.durationSeconds | duration }}</span>
+        </li>
+      }
+    </ol>
+  }
+</div>

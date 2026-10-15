@@ -1,0 +1,94 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="!$event && close()"
+  [modal]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="false"
+  [style]="{ width: '600px', maxWidth: 'calc(100vw - 32px)' }"
+  [contentStyle]="{ padding: '0' }"
+>
+  @if (song(); as s) {
+    <div class="upgrade" aria-labelledby="upgrade-title">
+      <div class="upgrade__accent"></div>
+
+      <div class="upgrade__body">
+        <div class="upgrade__top">
+          <span class="upgrade__icon"><i class="pi pi-lock"></i></span>
+          <button type="button" class="upgrade__close" (click)="close()" aria-label="Kapat">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="upgrade__chips">
+          <span class="upgrade__chip">PAKET YETERSİZ</span>
+          <span class="upgrade__code">403 · Song.PackageNotSufficient</span>
+        </div>
+
+        <div class="upgrade__text">
+          <h2 id="upgrade-title">Müzik deneyimini yükselt</h2>
+          <p>
+            Mevcut paketin (<strong>{{ currentPackage() }}</strong>) bu şarkıyı desteklemiyor.
+            <span class="upgrade__song">"{{ s.title }}"</span>
+            @if (s.requiredPackage) {
+              için <strong>{{ s.requiredPackage }}</strong> paket gerekiyor.
+            }
+            Yükselttiğin an alttaki bütün paketlerin şarkıları da açılır.
+          </p>
+        </div>
+
+        @if (s.requiredPackage) {
+          <div class="compare">
+            <div class="compare__side">
+              <span class="compare__label">MEVCUT PAKET</span>
+              <app-package-badge [tier]="currentPackage()" />
+            </div>
+            <i class="pi pi-arrow-right compare__arrow"></i>
+            <div class="compare__side compare__side--end">
+              <span class="compare__label compare__label--accent">GEREKEN PAKET</span>
+              <app-package-badge [tier]="s.requiredPackage" />
+            </div>
+          </div>
+        }
+
+        <div class="tiers" role="radiogroup" aria-label="Paket seç">
+          <span class="tiers__label">PAKET SEÇ</span>
+          @for (tier of options(); track tier) {
+            @let isSelected = selected() === tier;
+            @let opens = unlocks(tier);
+            <button
+              type="button"
+              role="radio"
+              class="tier"
+              [class.tier--selected]="isSelected"
+              [attr.aria-checked]="isSelected"
+              (click)="selected.set(tier)"
+            >
+              <span class="tier__radio"><span></span></span>
+              <app-package-badge [tier]="tier" />
+              <span class="tier__note" [class.tier__note--ok]="opens">
+                {{ s.title }} {{ opens ? 'açılır' : 'kilitli kalır' }}
+              </span>
+            </button>
+          }
+        </div>
+
+        @if (problem(); as p) {
+          <p-message severity="error" icon="pi pi-exclamation-circle">{{ p.title }}</p-message>
+        }
+
+        <div class="upgrade__actions">
+          <p-button label="Şimdilik değil" severity="secondary" [text]="true" (onClick)="close()" />
+          <p-button
+            [label]="selected() + ' pakete geç'"
+            icon="pi pi-arrow-up"
+            [loading]="saving()"
+            (onClick)="upgrade()"
+            styleClass="upgrade__cta"
+          />
+        </div>
+      </div>
+    </div>
+  }
+</p-dialog>
